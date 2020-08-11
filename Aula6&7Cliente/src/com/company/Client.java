@@ -7,27 +7,16 @@ public class Client {
     public static void main(String[] args) throws IOException {
         Socket socket = new Socket("localhost", 12345);
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        //new Thread(new Listener(in)).start();
+        new Thread(new Listener(in,socket)).start();
         PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
         BufferedReader inUser = new BufferedReader(new InputStreamReader(System.in));
 
-        //System.out.println(in.readLine());
         String r="";
-        r= in.readLine();
-        while ((r.isEmpty()!=true)) {
-            System.out.println(r);
-            r= in.readLine();
-        }
 
-        while ((r = inUser.readLine()) != null && !r.equals("quit")) {
+
+        while ((r = inUser.readLine()) != null && !r.equals("quit"))
             out.println(r);
-            r="";
-            r= in.readLine();
-            while ((r.isEmpty()!=true)) {
-                System.out.println(r);
-                r= in.readLine();
-            }
-        }
+
         out.println(r);
         r= in.readLine();
         System.out.println(r);
@@ -35,21 +24,26 @@ public class Client {
         socket.shutdownInput();
         socket.close();
     }
+
+
     public static class Listener implements Runnable {
         BufferedReader conn;
-
-        public Listener(BufferedReader c) {
+        Socket socket;
+        public Listener(BufferedReader c,Socket s) {
             conn = c;
+            socket = s;
         }
 
         public void run() {
             try {
+                String r;
+                while(socket.isBound()) {
+                    r = conn.readLine();
 
-                String r="";
-                r= conn.readLine();
-                while ((r.isEmpty()!=true)) {
-                    System.out.println(r);
-                    r= conn.readLine();
+                    while ((r.isEmpty() != true)) {
+                        System.out.println(r);
+                        r = conn.readLine();
+                    }
                 }
             }
             catch (Exception e){}
