@@ -29,7 +29,8 @@ public class Client {
             }
         }
         out.println(r);
-
+        r= in.readLine();
+        System.out.println(r);
         socket.shutdownOutput();
         socket.shutdownInput();
         socket.close();
