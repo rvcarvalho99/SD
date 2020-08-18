@@ -13,10 +13,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Server {
 
-
-
-
-
     public static void main(String[] args) throws IOException {
         System.out.println("BPI Turning on");
         ServerSocket socket = new ServerSocket(12345);
@@ -27,6 +23,7 @@ public class Server {
             System.out.println("Client Connected");
         }
     }
+
     public static class ClientHandler implements Runnable {
         Socket conn;
         Banco bpi;
